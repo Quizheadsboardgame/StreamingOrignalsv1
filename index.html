@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming Originals Quiz</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Baloo 2', sans-serif;
+            background-color: #38B6FF; /* Background color */
+            color: black;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        #yellow-box {
+            width: 200px;
+            height: 200px;
+            background-color: #FED405; /* Yellow color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            border: 5px solid black; /* Black edging */
+            transition: transform 0.1s ease-in-out;
+        }
+
+        #question-answer {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        /* Keyframes for the bounce animation */
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Class to trigger the bounce animation */
+        .animate-bounce {
+            animation: bounce 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="yellow-box">STREAMING ORIGINALS</div>
+
+    <div id="question-answer"></div>
+
+    <script>
+        const yellowBox = document.getElementById("yellow-box");
+        const questionAnswerDiv = document.getElementById("question-answer");
+
+        // Array of streaming originals trivia questions and answers
+        const streamingOriginalsQuestions = [
+            { question: "What is the name of the fictional town in 'Stranger Things'?", answer: "Hawkins" },
+            { question: "In 'The Crown,' which actor plays Prince Philip in the later seasons?", answer: "Tobias Menzies" },
+            { question: "What is the title of the 'The Mandalorian' episode featuring a character from 'The Clone Wars'?", answer: "Chapter 13: The Jedi" },
+            { question: "In 'Bridgerton,' who is the author of the books the series is based on?", answer: "Julia Quinn" },
+            { question: "Which Netflix series follows a young woman trying to survive a dystopian world where everyone is given a number?", answer: "Squid Game" },
+            { question: "In 'Ozark,' what is the name of the crime family that the protagonist works for?", answer: "The Langmore family" },
+            { question: "In 'The Witcher,' what is the name of Geralt's horse?", answer: "Roach" },
+            { question: "What is the name of the fictional video game in 'High Score' that became a cultural phenomenon?", answer: "Pac-Man" },
+            { question: "In 'The Queen's Gambit,' what is the name of the main character who is a chess prodigy?", answer: "Beth Harmon" },
+            { question: "In 'Money Heist,' what city is the heist planned in?", answer: "Madrid" },
+            { question: "What is the name of the high school drama in which the main character is a cheerleader who can communicate with the dead?", answer: "Dead to Me" },
+            { question: "In 'The Umbrella Academy,' what is the name of the group of adopted superhero siblings?", answer: "The Umbrella Academy" },
+            { question: "In 'The Boys,' what is the name of the group fighting against corrupt superheroes?", answer: "The Boys" },
+            { question: "In 'Black Mirror,' what is the name of the episode featuring a technology that allows people to revisit their memories?", answer: "The Entire History of You" },
+            { question: "In 'The Haunting of Hill House,' what is the name of the haunted house?", answer: "Hill House" },
+            { question: "In 'Narcos,' who is the notorious drug lord that the series focuses on in its first seasons?", answer: "Pablo Escobar" },
+            { question: "What is the title of the 'Dark Crystal' prequel series on Netflix?", answer: "The Dark Crystal: Age of Resistance" },
+            { question: "In 'The Witcher,' what is the name of the sorceress who is a key ally to Geralt?", answer: "Yennefer of Vengerberg" },
+            { question: "In 'You,' what is the profession of Joe Goldberg, the main character?", answer: "Bookseller" },
+            { question: "What is the name of the political satire series set in the White House on HBO?", answer: "Veep" },
+            { question: "In 'The Marvelous Mrs. Maisel,' what is the name of the main character who becomes a stand-up comedian?", answer: "Miriam Maisel" },
+            { question: "In 'Money Heist,' what is the name of the mastermind behind the heist?", answer: "The Professor" },
+            { question: "In 'Ted Lasso,' what is the name of the football team that Ted Lasso coaches?", answer: "AFC Richmond" },
+            { question: "In 'The Mandalorian,' what is the name of the Force-sensitive child that the Mandalorian protects?", answer: "Grogu" },
+            { question: "In 'Fargo,' which season is set in 1979 and focuses on a family-run butcher shop?", answer: "Season 2" },
+            { question: "In 'The Queen's Gambit,' what is Beth Harmon’s primary chess opening?", answer: "Sicilian Defense" },
+            { question: "In 'Narcos,' who takes over after Pablo Escobar's death?", answer: "The Cali Cartel" },
+            { question: "In 'Stranger Things,' who is the leader of the group of kids?", answer: "Mike Wheeler" },
+            { question: "What is the name of the drug that is a key plot element in 'Ozark'?", answer: "Methamphetamine" },
+            { question: "In 'Bridgerton,' who is the eldest Bridgerton sibling?", answer: "Anthony Bridgerton" },
+            { question: "In 'Black Mirror,' what is the name of the episode where people rate each other based on social interactions?", answer: "Nosedive" },
+            { question: "In 'The Boys,' what is the name of the superhero corporation that the main characters fight against?", answer: "Vought International" },
+            { question: "What is the name of the high-stakes game in 'Squid Game'?", answer: "Red Light, Green Light" },
+            { question: "In 'The Umbrella Academy,' what is the name of the time-traveling superhero?", answer: "Number Five" },
+            { question: "In 'You,' what is the name of Joe Goldberg’s bookstore?", answer: "Mooney's" },
+            { question: "In 'The Haunting of Hill House,' who is the youngest sibling?", answer: "Theo Vance" },
+            { question: "What is the name of the casino owner in 'Ozark'?", answer: "Darlene Snell" },
+            { question: "In 'The Dark Crystal: Age of Resistance,' what are the three types of creatures fighting for control of the Crystal?", answer: "Gelflings, Skeksis, and Mystics" },
+            { question: "In 'Ted Lasso,' what is Ted’s primary coaching philosophy?", answer: "Believing in the team and positive reinforcement" },
+            { question: "In 'The Marvelous Mrs. Maisel,' what city is Midge Maisel trying to make it in comedy?", answer: "New York City" },
+            { question: "In 'Fargo,' which season is set in 2010 and involves a crime in a diner?", answer: "Season 3" },
+            { question: "In 'The Mandalorian,' what is the name of the Mandalorian's ship?", answer: "The Razor Crest" },
+            { question: "In 'The Crown,' which actor portrays Queen Elizabeth II in the early seasons?", answer: "Claire Foy" },
+            { question: "In 'Ozark,' what is the name of the financial adviser played by Jason Bateman?", answer: "Marty Byrde" },
+            { question: "In 'Money Heist,' what is the name of the red jumpsuits worn by the robbers?", answer: "The Dali Mask" },
+            { question: "In 'Bridgerton,' who is the Duke of Hastings?", answer: "Simon Basset" },
+            { question: "In 'Stranger Things,' who is Eleven’s biological mother?", answer: "Terry Ives" },
+            { question: "In 'The Witcher,' what is the name of the elven kingdom?", answer: "Cintra" },
+            { question: "In 'The Boys,' what is the name of the character who can move at superhuman speeds?", answer: "A-Train" }
+        ];
+
+        let shuffledQuestions = [];
+        let questionIndex = 0;
+
+        // Shuffle the questions array
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Initialize questions
+        function initializeQuestions() {
+            shuffledQuestions = shuffleArray([...streamingOriginalsQuestions]);
+            questionIndex = 0;
+            displayQuestion();
+        }
+
+        // Function to display the current question
+        function displayQuestion() {
+            if (shuffledQuestions.length === 0) {
+                questionAnswerDiv.innerHTML = "<strong>No more questions!</strong>";
+                return;
+            }
+            const currentQA = shuffledQuestions[questionIndex];
+            questionAnswerDiv.innerHTML = `<strong>Question:</strong> ${currentQA.question}<br><strong>Answer:</strong> ${currentQA.answer}`;
+        }
+
+        // Bounce animation on click
+        yellowBox.addEventListener("click", () => {
+            yellowBox.classList.add("animate-bounce");
+            setTimeout(() => {
+                yellowBox.classList.remove("animate-bounce");
+            }, 300);
+
+            questionIndex = (questionIndex + 1) % shuffledQuestions.length;
+            displayQuestion();
+        });
+
+        // Initialize questions on page load
+        window.onload = initializeQuestions;
+    </script>
+
+</body>
+</html>
